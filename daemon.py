@@ -2,7 +2,7 @@
 # Created by Adam Melton (.dok) referenceing https://bitmessage.org/wiki/API_Reference for API documentation
 # Distributed under the MIT/X11 software license. See http://www.opensource.org/licenses/mit-license.php.
 
-# This is an example of a daemon client for PyBitmessage 0.3.4444y .dok (Version 0.1.9)
+# This is an example of a daemon client for PyBitmessage 0.3.4y .dok (Version 0.1.9)
 
 
 import ConfigParser
