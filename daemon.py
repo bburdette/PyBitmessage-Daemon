@@ -2,7 +2,7 @@
 # Created by Adam Melton (.dok) referenceing https://bitmessage.org/wiki/API_Reference for API documentation
 # Distributed under the MIT/X11 software license. See http://www.opensource.org/licenses/mit-license.php.
 
-# This is an example of a daemon client for PyBitmessage 0.3.4, by .dok (Version 0.2.0)
+# This is an example of a daemon client for PyBitmessage 0.3.4444y .dok (Version 0.1.9)
 
 
 import ConfigParser
@@ -14,10 +14,16 @@ import json
 import time
 import sys
 import os
+import shared
 
 api = ''
-keysPath = 'keys.dat'
 usrPrompt = 0 #0 = First Start, 1 = prompt, 2 = no prompt if the program is starting up
+
+def getKeysPath():
+    appDataFolder = shared.lookupAppdataFolder()
+    return appDataFolder + 'keys.dat'
+
+keysPath = getKeysPath()
 
 def restartBmNotify(): #Prompts the user to restart Bitmessage. 
     print ' '
@@ -37,21 +43,6 @@ def safeConfigGetBoolean(section,field):
         return False
 
 #Begin keys.dat interactions
-def lookupAppdataFolder(): #gets the appropriate folders for the .dat files depending on the OS. Taken from bitmessagemain.py
-    APPNAME = "PyBitmessage"
-    from os import path, environ
-    if sys.platform == 'darwin':
-        if "HOME" in environ:
-            dataFolder = path.join(os.environ["HOME"], "Library/Application support/", APPNAME) + '/'
-        else:
-            print 'Could not find home folder, please report this message and your OS X version to the Daemon Github.'
-            os.exit()
-
-    elif 'win32' in sys.platform or 'win64' in sys.platform:
-        dataFolder = path.join(environ['APPDATA'], APPNAME) + '\\'
-    else:
-        dataFolder = path.expanduser(path.join("~", ".config/" + APPNAME + "/"))
-    return dataFolder
 
 def apiInit(apiEnabled):
     global keysPath
@@ -133,7 +124,6 @@ def apiData():
     global keysPath
     
     config = ConfigParser.SafeConfigParser()
-    keysPath = 'keys.dat'
     
     config.read(keysPath) #First try to load the config file (the keys.dat file) from the program directory
 
@@ -142,8 +132,7 @@ def apiData():
         appDataFolder = ''
     except:
         #Could not load the keys.dat file in the program directory. Perhaps it is in the appdata directory.
-        appDataFolder = lookupAppdataFolder()
-        keysPath = appDataFolder + 'keys.dat'
+        keysPath = getKeysPath()
         config = ConfigParser.SafeConfigParser()
         config.read(keysPath)
 
@@ -192,7 +181,6 @@ def bmSettings(): #Allows the viewing and modification of keys.dat settings.
     global keysPath
     global usrPrompt
     config = ConfigParser.SafeConfigParser()
-    keysPath = 'keys.dat'
     
     config.read(keysPath)#Read the keys.dat
 
